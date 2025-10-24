@@ -64,7 +64,7 @@ def create_output_directory(output_dir: str) -> None:
 
 def get_default_snp_file() -> Optional[str]:
     """Get default SNP file path if it exists."""
-    default_path = "/gpfs1/tangfuchou_pkuhpc/tangfuchou_coe/xuexiaohui/database/mm10/GATK/all_DBA_2J_SNPs_C57BL_6NJ_reference.based_on_GRCm38.sorted.txt"
+    default_path = "/path/to/all_DBA_2J_SNPs_C57BL_6NJ_reference.based_on_GRCm38.sorted.txt"
     
     if os.path.exists(default_path):
         return default_path

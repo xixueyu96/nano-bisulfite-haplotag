@@ -6,8 +6,9 @@ import argparse
 import os
 import sys
 import logging
-from .haplotag import HaploTagger
-from .utils import str2bool, setup_logging, validate_file_exists, create_output_directory, get_default_snp_file
+
+from nano_bisulfite_haplotag.haplotag import HaploTagger
+from nano_bisulfite_haplotag.utils import str2bool, setup_logging, validate_file_exists, create_output_directory, get_default_snp_file
 
 
 def create_parser() -> argparse.ArgumentParser:

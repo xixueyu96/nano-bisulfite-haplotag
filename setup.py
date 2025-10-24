@@ -10,11 +10,11 @@ setup(
     name="nano-bisulfite-haplotag",
     version="1.0.0",
     author="Xiaohui Xue",
-    author_email="your.email@example.com",
+    author_email="xxhui@alumni.pku.edu.cn",
     description="A tool for haplotype tagging of nanopore bisulfite sequencing data",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/nano-bisulfite-haplotag",
+    url="https://github.com/xixueyu96/nano-bisulfite-haplotag",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
