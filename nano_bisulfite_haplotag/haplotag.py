@@ -49,6 +49,34 @@ class OptimizedHaploTagger:
             snps_by_chr[chr_name].sort(key=lambda x: x[0])
             
         return dict(snps_by_chr)
+
+    def load_snps_by_chromosome_numpy(self):
+        """使用 NumPy 进一步优化"""
+        import numpy as np
+        
+        # 读取为 numpy 数组
+        data = np.genfromtxt(
+            self.snp_file,
+            delimiter='\t',
+            dtype=[('chr', 'U10'), ('pos', 'i4'), 
+                ('ref', 'U10'), ('alt', 'U10'), ('id', 'U50')],
+            encoding='utf-8'
+        )
+        
+        snps_by_chr = defaultdict(list)
+        
+        # 向量化处理
+        for record in data:
+            chr_name = record['chr'] if record['chr'].startswith('chr') else f"chr{record['chr']}"
+            # ref, alt = record['genotype'].split('/')
+            ref, alt = record['ref'], record['alt']
+            snps_by_chr[chr_name].append((int(record['pos']), ref, alt))
+        
+        # 排序
+        for chr_name in snps_by_chr:
+            snps_by_chr[chr_name].sort(key=lambda x: x[0])
+        
+        return dict(snps_by_chr)
     
     def _assign_tag(self, read_base: str, ref: str, snp: str, strand: str) -> str:
         """Assign haplotype tag based on read base, reference, SNP, and strand information."""
@@ -183,6 +211,8 @@ class MemoryMappedHaploTagger(OptimizedHaploTagger):
             snp_dict[pos] = (ref, alt)
         
         positions = sorted(snp_dict.keys())
+
+        ## TODO test these codes
         min_pos = positions[0] - 1000  # Add buffer
         max_pos = positions[-1] + 1000
         
@@ -228,7 +258,7 @@ class MemoryMappedHaploTagger(OptimizedHaploTagger):
             
             # Find SNP position (convert to 0-based)
             pair_snp = [x for x in pair if x[1] == (pos - 1)]
-            # pair_snp=reduce(lambda acc, x: acc + [x] if x[1]==(pos-1) else acc, pair, [])
+
             if not pair_snp:
                 return None
             
@@ -269,7 +299,7 @@ class MemoryMappedHaploTagger(OptimizedHaploTagger):
         logging.info("Starting streaming haplotype analysis...")
         
         # Load SNPs grouped by chromosome
-        snps_by_chr = self.load_snps_by_chromosome()
+        snps_by_chr = self.load_snps_by_chromosome_numpy()
         total_snps = sum(len(snps) for snps in snps_by_chr.values())
         logging.info(f"Loaded {total_snps} SNPs across {len(snps_by_chr)} chromosomes")
         
