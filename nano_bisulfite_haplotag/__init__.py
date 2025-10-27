@@ -6,7 +6,7 @@ __version__ = "1.0.0"
 __author__ = "Xiaohui Xue"
 __email__ = "xxhui@alumni.pku.edu.cn"
 
-from .haplotag import HaploTagger
+from .haplotag import MemoryMappedHaploTagger
 from .main import main
 
-__all__ = ["HaploTagger", "main"]
+__all__ = ["MemoryMappedHaploTagger", "main"]

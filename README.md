@@ -48,7 +48,7 @@ chr2    3400    A    T    rs567890
 - Column 2 (POSITION): 1-based genomic position
 - Column 3 (REF_ALLELE): Reference allele (A, T, G, C)
 - Column 4 (ALT_ALLELE): Alternative allele (A, T, G, C)
-- Column 5+ (OPTIONAL): Additional annotation columns (SNP ID, etc.)
+- Column 5 (SNP_ID): Annotation columns (SNP ID, etc.)
 
 ## Usage
 

@@ -7,7 +7,7 @@ import os
 import sys
 import logging
 
-from .haplotag import HaploTagger
+from .haplotag import MemoryMappedHaploTagger
 from .utils import str2bool, setup_logging, validate_file_exists, create_output_directory, get_default_snp_file
 
 
@@ -124,7 +124,7 @@ def main():
     
     try:
         # Create HaploTagger instance
-        tagger = HaploTagger(
+        tagger = MemoryMappedHaploTagger(
             bam_file=args.input_bam,
             snp_file=args.snp_file,
             output_dir=output_dir,
@@ -133,18 +133,20 @@ def main():
             num_processors=args.num_processors
         )
         
-        # Perform analysis
-        stats = tagger.analyze_snps()
+        results = tagger.analyze_snps_streaming()
         
-        # Print summary
-        print("\nAnalysis Summary:")
-        print("================")
-        print(f"Total reads processed: {stats['total_reads']:,}")
-        print(f"Reads tagged: {stats['tagged_reads']:,}")
-        print(f"HAP1 reads: {stats['hap1_reads']:,}")
-        print(f"HAP2 reads: {stats['hap2_reads']:,}")
-        print(f"Ambiguous reads: {stats['ambiguous_reads']:,}")
-        print(f"Tagging rate: {stats['tagging_rate']:.2%}")
+        # 打印结果
+        print("Analysis Results:")
+        print(f"Total SNPs: {results['total_snps']}")
+        print(f"Reads with SNPs: {results['reads_with_snps']}")
+        print(f"HAP1 reads: {results['hap1_reads']}")
+        print(f"HAP2 reads: {results['hap2_reads']}")
+        print(f"Total tagged reads: {results['tagged_reads']}")
+        
+        # 计算标记率
+        if results['reads_with_snps'] > 0:
+            tagging_rate = results['tagged_reads'] / results['reads_with_snps']
+            print(f"Tagging rate: {tagging_rate:.2%}")
         
         logger.info("Analysis completed successfully")
         
