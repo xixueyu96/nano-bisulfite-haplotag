@@ -58,24 +58,6 @@ chr2    3400    A    T    rs567890
 nano-bisulfite-haplotag -b input.bam -s snps.txt -o output_dir
 ```
 
-### Python API
-
-```
-from nano_bisulfite_haplotag import HaploTagger
-
-tagger = HaploTagger(
-    bam_file="input.bam",
-    snp_file="snps.txt",
-    output_dir="output",
-    min_snp=2,
-    hap_fold_change=2.0,
-    num_processors=4
-)
-
-stats = tagger.analyze_snps()
-print(f"Tagging rate: {stats['tagging_rate']:.2%}")
-```
-
 ### Parameters
 
 * `-b, --input_bam`: Input BAM file (coordinate sorted with index)
